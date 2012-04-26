@@ -54,24 +54,6 @@ public class IsytokaActivity extends Activity implements Observer {
 	
     
     
-    public String getLocalIpAddress() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()) {
-                        return inetAddress.getHostAddress().toString();
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    
     
 	/** Called when the activity is first created. */
     @Override
@@ -90,8 +72,7 @@ public class IsytokaActivity extends Activity implements Observer {
         editText2.setOnKeyListener(keyListener);
 
         init();
-        
-        System.out.println(getLocalIpAddress());
+        setTitle("Isytoka - " + Globals.localHostName + " (" + Globals.localIP + ")");
         
         try
         {

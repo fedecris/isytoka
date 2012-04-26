@@ -19,13 +19,15 @@ public class HostUDPServer extends Thread {
 	public HostUDPServer(Context context) {
         try {
             // Leer el archivo almacenado
+        	// FIXME: DEBERIA PODER SELECCIONAR UTILIZAR EL ARCHIVO DE PREFERENCIAS O LA DETECCION AUTOMATICA
             InputStream input = context.getAssets().open(Constants.PROPERTIES_PREFERENCES);
             Properties prop = new Properties();
             prop.load(input);
             
-            // Recuperar el nombre e IP
-            Globals.localIP = (String)prop.get(Constants.PROP_PREFERENCE_HOSTIP);
-            Globals.localHostName = (String)prop.get(Constants.PROP_PREFERENCE_HOSTNAME);
+            // Recuperar el nombre e IP local - MODIFICADO: NO LEE DEL PROPERTIES
+            Host host = Host.getLocalHostAddresAndIP();
+            Globals.localIP = host.getHostIP(); // (String)prop.get(Constants.PROP_PREFERENCE_HOSTIP);
+            Globals.localHostName = host.getHostName(); //(String)prop.get(Constants.PROP_PREFERENCE_HOSTNAME);
             
             System.out.println( " Host properties: " + Globals.localHostName + "(" + Globals.localIP + ")" );
         }

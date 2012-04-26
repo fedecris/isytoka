@@ -1,5 +1,10 @@
 package ar.edu.unlp.info.lidi.isytoka.network;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import ar.edu.unlp.info.lidi.isytoka.util.Globals;
 
 public class Host {
@@ -102,5 +107,25 @@ public class Host {
     	return getHostName().equals(((Host)host).getHostName()) &&
     			getHostIP().equals(((Host)host).getHostIP());
     }
-	
+
+    
+    
+    public static Host getLocalHostAddresAndIP() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                    	Host thisHost = new Host(inetAddress.getHostName(), inetAddress.getHostAddress().toString(), true);
+                        return thisHost;
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
 }
