@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.lidi.isytoka.network;
 
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -115,7 +116,10 @@ public class Host {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
+                	InetAddress inetAddress = enumIpAddr.nextElement();
+                	// Solo IPv4
+                	if (inetAddress instanceof Inet6Address)
+                		continue;
                     if (!inetAddress.isLoopbackAddress()) {
                     	Host thisHost = new Host(inetAddress.getHostName(), inetAddress.getHostAddress().toString(), true);
                         return thisHost;
